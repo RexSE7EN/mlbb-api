@@ -41,6 +41,7 @@ model Skill {
   description String?
   image       String?
   cooldown    Float
+  skillCost   Float
   heroId      String
   hero        Hero     @relation(fields: [heroId], references: [id])
 
@@ -89,10 +90,69 @@ model Item {
   image       String?
   cost        Int
   cooldown    Float?
+  attributes  ItemAttribute[]
 
   @@map("items")
 }
 
+enum ItemAttributeType {
+  HP
+  HP_REGEN
+  MANA
+  MANA_REGEN
+  ADAPTIVE_ATTACK
+  PHYSICAL_ATTACK
+  PHYSICAL_DEFENSE
+  MAGIC_POWER
+  MAGIC_DEFENSE
+  ATTACK_SPEED
+  MOVEMENT_SPEED
+  SLOW_REDUCTION 
+  COOLDOWN_REDUCTION
+  CRIT_RATE
+  CRIT_CHANCE
+  LIFE_STEAL
+  HYBRID_LIFE_STEAL
+  SPELL_VAMP
+  MAGIC_PENETRATION 
+}
+
+
+enum BlessingType {
+  ICE
+  BLOODY
+  FLAME
+  ENCOURAGE
+  FAVOUR
+  DIRE_HIT
+  CONCEAL
+}
+model Blessing {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  type        BlessingType
+
+  @@map("blessings")
+}
+
+enum ItemType {
+  MAGIC     // For items that increase magic power
+  PHYSICAL // For items that increase physical attack 
+  DEFENSE  // For items that increase physical or magic defense
+  MOVEMENT
+}
+model ItemAttribute {
+  id          String      @id @default(uuid())
+  itemId      String
+  item        Item     @relation(fields: [itemId], references: [id])
+  attribute   String
+  value       Float
+  type       ItemAttributeType
+
+  @@map("item_attributes")
+}
 model Emblem {
   id              String      @id @default(uuid())
   name            String
@@ -139,6 +199,24 @@ model Rank {
   image       String?
 
   @@map("ranks")
+}
+
+model JungleCreep {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  gold        Int
+  hp          Float
+  XP         Float  // Experience points awarded for defeating the jungle creep
+  attack      Float
+  physicalDefense Float
+  magicDefense    Float
+  firstSpawn   Float // Time in seconds for the first spawn of the jungle creep
+  respawnTime Float  // Time in seconds for the jungle creep to respawn after being defeated
+  reward      String?
+
+  @@map("jungle_creeps")
 }
 
 
