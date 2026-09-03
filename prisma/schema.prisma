@@ -11,6 +11,16 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  UNDEFINED
+  ASSASSIN
+  FIGHTER
+  MAGE
+  MARKSMAN
+  SUPPORT
+  TANK
+}
+
 model Hero {
   id          String      @id @default(uuid())
   name        String
@@ -25,36 +35,26 @@ model Hero {
   @@map("heroes")
 }
 
-enum Role {
-  UNDEFINED
-  ASSASSIN
-  FIGHTER
-  MAGE
-  MARKSMAN
-  SUPPORT
-  TANK
-}
-
 model Skill {
   id          String      @id @default(uuid())
+  heroId      String
   name        String
   description String?
   image       String?
   cooldown    Float
   skillCost   Float
-  heroId      String
-  hero        Hero     @relation(fields: [heroId], references: [id])
+  hero        Hero     @relation(fields: [heroId], references: [id], onDelete: Cascade)
 
   @@map("skills")
 }
 
 model Skin {
   id          String      @id @default(uuid())
+  heroId      String
   name        String
   releaseDate DateTime @default(now())
   image       String?
-  heroId      String
-  hero        Hero     @relation(fields: [heroId], references: [id])
+  hero        Hero     @relation(fields: [heroId], references: [id], onDelete: Cascade)
 
   @@map("skins")
 }
@@ -62,8 +62,6 @@ model Skin {
 model HeroAttribute {
   id                String @id @default(uuid())
   heroId            String @unique
-  hero              Hero   @relation(fields: [heroId], references: [id])
-
   hp                Float
   hpGrowth          Float?
   hpRegen           Float?
@@ -79,6 +77,7 @@ model HeroAttribute {
   attackSpeedGrowth Float?
   movementSpeed     Float?
   attackRange       Float?
+  hero              Hero   @relation(fields: [heroId], references: [id], onDelete: Cascade)
 
   @@map("hero_attributes")
 }
@@ -130,10 +129,9 @@ enum ItemAttributeType {
 model ItemAttribute {
   id          String      @id @default(uuid())
   itemId      String
-  item        Item     @relation(fields: [itemId], references: [id])
-  attribute   String
+  type        ItemAttributeType @default(UNDEFINED)
   value       Float
-  type       ItemAttributeType @default(UNDEFINED)
+  item        Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   @@map("item_attributes")
 }
@@ -173,11 +171,11 @@ model Emblem {
 
 model EmblemTalent {
   id          String      @id @default(uuid())
+  emblemId    String
   name        String
   description String?
   image       String?
-  emblemId    String
-  emblem      Emblem   @relation(fields: [emblemId], references: [id])
+  emblem      Emblem   @relation(fields: [emblemId], references: [id], onDelete: Cascade)
 
   @@map("emblem_talents")
 }
