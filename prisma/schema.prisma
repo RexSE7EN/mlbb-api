@@ -26,13 +26,13 @@ model Hero {
 }
 
 enum Role {
+  UNDEFINED
   ASSASSIN
   FIGHTER
   MAGE
   MARKSMAN
   SUPPORT
   TANK
-  UNDEFINED
 }
 
 model Skill {
@@ -83,6 +83,14 @@ model HeroAttribute {
   @@map("hero_attributes")
 }
 
+enum ItemType {
+  UNDEFINED
+  MAGIC     // For items that increase magic power
+  PHYSICAL // For items that increase physical attack 
+  DEFENSE  // For items that increase physical or magic defense
+  MOVEMENT
+}
+
 model Item {
   id          String      @id @default(uuid())
   name        String
@@ -90,12 +98,14 @@ model Item {
   image       String?
   cost        Int
   cooldown    Float?
+  type        ItemType @default(UNDEFINED)
   attributes  ItemAttribute[]
 
   @@map("items")
 }
 
 enum ItemAttributeType {
+  UNDEFINED
   HP
   HP_REGEN
   MANA
@@ -117,42 +127,40 @@ enum ItemAttributeType {
   MAGIC_PENETRATION 
 }
 
-
-enum BlessingType {
-  ICE
-  BLOODY
-  FLAME
-  ENCOURAGE
-  FAVOUR
-  DIRE_HIT
-  CONCEAL
-}
-model Blessing {
-  id          String      @id @default(uuid())
-  name        String
-  description String?
-  image       String?
-  type        BlessingType
-
-  @@map("blessings")
-}
-
-enum ItemType {
-  MAGIC     // For items that increase magic power
-  PHYSICAL // For items that increase physical attack 
-  DEFENSE  // For items that increase physical or magic defense
-  MOVEMENT
-}
 model ItemAttribute {
   id          String      @id @default(uuid())
   itemId      String
   item        Item     @relation(fields: [itemId], references: [id])
   attribute   String
   value       Float
-  type       ItemAttributeType
+  type       ItemAttributeType @default(UNDEFINED)
 
   @@map("item_attributes")
 }
+
+enum BlessingType {
+  UNDEFINED
+  // Jungle
+  ICE 
+  BLOODY
+  FLAME
+  // Roam
+  ENCOURAGE
+  FAVOUR
+  DIRE_HIT
+  CONCEAL
+}
+
+model Blessing {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  type        BlessingType @default(UNDEFINED)
+
+  @@map("blessings")
+}
+
 model Emblem {
   id              String      @id @default(uuid())
   name            String
@@ -218,8 +226,3 @@ model JungleCreep {
 
   @@map("jungle_creeps")
 }
-
-
-// Tables
-// Heroes, Skins, Items, Emblems, Spells, Game Modes,
-// Ranks , Skills, Attributes, Attributes Types
