@@ -1,23 +1,22 @@
 ## Project Structure
+
+The current project structure is:
+
 mlbb-api/
 ├── src/
 │   ├── config/          # Database, environment, and third-party service setups
 │   │   └── db.ts
 │   ├── controllers/     # Request handlers and business logic
+│   │   ├── authController.ts
 │   │   ├── heroController.ts
-│   │   └── nightlyController.ts
-│   ├── middlewares/     # Custom Express middlewares (auth, validation, error handling)
-│   │   └── errorHandler.ts
-│   ├── models/          # Data schemas or ORM models
-│   │   └── heroModel.ts
-│   ├── routes/          # Express route definitions pointing to controllers
-│   │   ├── herosRoutes.ts
+│   ├── middleware/      # Custom Express middleware
+│   ├── routes/          # Express route definitions
+│   │   ├── authRoutes.ts
+│   │   ├── heroesRoutes.ts
+│   │   ├── itemsRoutes.ts
 │   │   └── nightlyRoutes.ts
-│   ├── services/        # Core business/data-fetching logic (keeps controllers thin)
-│   │   └── heroService.ts
-│   ├── utils/           # Helper functions and reusable utilities
-│   │   └── logger.ts
-│   └── index.ts         # Application entry point & server bootstrap
-├── .gitignore
+│   └── index.ts         # Application entry point and server bootstrap
+├── prisma/              # Prisma schema and database migrations
 ├── package.json
+├── .gitignore
 └── tsconfig.json

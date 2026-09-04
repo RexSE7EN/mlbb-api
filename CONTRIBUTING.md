@@ -12,7 +12,7 @@ Thank you for your interest in contributing! Please follow the guidelines below.
    git checkout dev
    ```
 
-4. Create a new branch from ``dev`` for your changes:
+4. Create a new branch from `dev` for your changes:
 
    ```bash
    git checkout -b feature/your-change
@@ -40,7 +40,7 @@ chore: corrected mistakes
 
 ## Pull Requests
 
-Always open pull requests on ``dev`` branch (any PR on ``master`` branch directly will be declined)  
+Always open pull requests against the `dev` branch. Pull requests opened directly against the `master` branch will be declined.
 Before opening a pull request:
 - Ensure tests and lint checks pass.
 - Rebase or update your branch with the latest target branch.
@@ -66,4 +66,4 @@ See [VERSIONING.md](VERSIONING.md) for the project's Semantic Versioning guideli
 
 ## Questions
 
-For questions, open a discussion or issue with enough context for others to help.
+For questions, open a discussion or issue and provide enough context for others to help.
