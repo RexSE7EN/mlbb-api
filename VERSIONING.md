@@ -19,4 +19,4 @@ While the project is under development, the API may change between releases. Bef
 - Update the version in `package.json` when preparing a release.
 - Document user-facing changes in the release notes or changelog.
 - Keep API-breaking changes clearly identified.
-- Use the `dev` branch for ongoing work and pull requests, as described in [CONTRIBUTE.md](CONTRIBUTE.md).
+- Use the `dev` branch for ongoing work and pull requests, as described in [CONTRIBUTING.md](CONTRIBUTING.md).

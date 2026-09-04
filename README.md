@@ -30,7 +30,7 @@ Copy `.env.example` and name the copy `.env`:
 cp .env.example .env
 ```
 
-Then update the values in `.env` for your environment. `DATABASE_URL` for app and `DATABASE_URL_UNPOOLED` for Prisma is required. Put `PORT` value and start developing.
+Then update the values in `.env` for your environment. `DATABASE_URL` is required by the application, and `DATABASE_URL_UNPOOLED` is required by Prisma. Set the `PORT` value before starting development.
 
 ## Database Setup
 
@@ -60,7 +60,7 @@ For a normal start without file watching:
 npm start
 ```
 
-The API is available at `http://localhost:[your-port]` by default.
+The API is available at `http://localhost:<your-port>` by default.
 
 ## Validation
 
