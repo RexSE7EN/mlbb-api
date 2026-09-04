@@ -12,7 +12,7 @@ Thank you for your interest in contributing! Please follow the guidelines below.
    git checkout dev
    ```
 
-4. Create a new branch for your changes:
+4. Create a new branch from ``dev`` for your changes:
 
    ```bash
    git checkout -b feature/your-change
