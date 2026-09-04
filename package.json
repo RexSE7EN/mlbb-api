@@ -37,8 +37,8 @@
     "typescript": "^7.0.2"
   },
   "allowScripts": {
-    "@prisma/engines@7.10.0": true,
-    "esbuild@0.28.2": true,
-    "prisma@7.10.0": true
+    "@prisma/engines": true,
+    "esbuild": true,
+    "prisma": true
   }
 }

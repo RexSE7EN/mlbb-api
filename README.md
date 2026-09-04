@@ -30,7 +30,7 @@ Copy `.env.example` and name the copy `.env`:
 cp .env.example .env
 ```
 
-Then update the values in `.env` for your environment. `DATABASE_URL` is required. `PORT` is optional and defaults to `7000`.
+Then update the values in `.env` for your environment. `DATABASE_URL` for app and `DATABASE_URL_UNPOOLED` for Prisma is required. Put `PORT` value and start developing.
 
 ## Database Setup
 
@@ -43,7 +43,7 @@ npx prisma migrate deploy
 To create a migration during development:
 
 ```bash
-npx prisma migrate dev --name describe-your-change
+npx prisma migrate dev --name <describe-your-change>
 ```
 
 ## Running the API
@@ -76,6 +76,6 @@ This project is under active development. The `dev` branch is used for ongoing w
 
 ## Documentation
 
-- [Contributing](CONTRIBUTE.md)
+- [Contributing](CONTRIBUTING.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Versioning](VERSIONING.md)

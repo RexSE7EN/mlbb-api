@@ -2,7 +2,7 @@
 
 ## Our Commitment
 
-We want mlbb-api to be a welcoming, respectful, and constructive project for everyone. By participating, you agree to help create a positive environment for all contributors and users.
+We want to be a welcoming, respectful, and constructive project for everyone. By participating, you agree to help create a positive environment for all contributors and users.
 
 ## Expected Behavior
 
@@ -21,6 +21,8 @@ We want mlbb-api to be a welcoming, respectful, and constructive project for eve
 ## Reporting Issues
 
 Report unacceptable behavior to the project maintainers through the repository issue tracker. Include enough context for the maintainers to understand what happened. Do not include private or sensitive information in a public issue.
+
+Contact : [Discord](https://discord.gg/7wqnERhG9f)
 
 Maintainers may remove, edit, or reject comments, issues, pull requests, or other contributions that violate this Code of Conduct. They may also take any other action they consider appropriate to keep the community constructive and safe.
 
