@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import { connectDB, disconnectDB } from '@/config/db.js';
 
 // Import Routes Section
+import authRoutes from '@/routes/authRoutes.js';
 import nightlyRoutes from '@/routes/nightlyRoutes.js';
 import heroesRoutes from '@/routes/heroesRoutes.js';
 
@@ -14,12 +15,18 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 7000;
 
+// Core Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Default Routes
 app.get('/', (req, res) => {
   res.json({
     message: 'Welcome to the MLBB API (Stable)'
   });
 });
+
+app.use('/auth', authRoutes);
 
 app.use('/nightly', nightlyRoutes);
 
