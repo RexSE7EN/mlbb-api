@@ -224,3 +224,33 @@ model JungleCreep {
 
   @@map("jungle_creeps")
 }
+
+// User model for authentication and authorization
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id          String      @id @default(uuid())
+  name        String      
+  email       String      @unique
+  password    String
+  role        UserRole    @default(USER)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  apiTokens   UserAPIToken[]
+
+  @@map("users")
+}
+
+model UserAPIToken {
+  id          String      @id @default(uuid())
+  userId      String
+  token       String      @unique
+  createdAt   DateTime    @default(now())
+  expiresAt   DateTime
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_api_tokens")
+}
