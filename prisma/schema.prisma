@@ -231,15 +231,22 @@ enum UserRole {
   ADMIN
 }
 
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
 model User {
-  id          String      @id @default(uuid())
-  name        String      
-  email       String      @unique
-  password    String
-  role        UserRole    @default(USER)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  apiTokens   UserAPIToken[]
+  id            String            @id @default(uuid())
+  name          String
+  email         String            @unique
+  password      String
+  role          UserRole          @default(USER)
+  accountStatus AccountStatus     @default(ACTIVE)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  apiTokens     UserAPIToken[]
 
   @@map("users")
 }

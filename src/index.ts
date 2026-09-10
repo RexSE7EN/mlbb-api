@@ -4,8 +4,8 @@ import { connectDB, disconnectDB } from '@/config/db.js';
 
 // Import Routes Section
 import authRoutes from '@/routes/authRoutes.js';
-import nightlyRoutes from '@/routes/nightlyRoutes.js';
 import heroesRoutes from '@/routes/heroesRoutes.js';
+import userRoutes from '@/routes/userRoutes.js';
 
 // Load environment variables
 config();
@@ -27,8 +27,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRoutes);
-
-app.use('/nightly', nightlyRoutes);
+app.use('/users', userRoutes);
 
 // Custom API Routes
 app.use('/heroes', heroesRoutes);
