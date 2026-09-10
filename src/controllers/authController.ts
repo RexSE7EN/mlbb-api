@@ -22,7 +22,7 @@ const registerUser = async (req: Request, res: Response) => {
   }
 
   // Hash Password
-  const salt = await bcrypt.genSalt(27);
+  const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   // Create User
@@ -134,7 +134,17 @@ const loginUser = async (req: Request, res: Response) => {
   });
 };
 
+const logoutUser = async (req: Request, res: Response) => {
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(0), // Set the cookie to expire in the past
+  });
+
+  res.status(200).json({ status: 'success', message: 'User logged out successfully' });
+}
+
 export {
   registerUser,
   loginUser,
+  logoutUser
 };
