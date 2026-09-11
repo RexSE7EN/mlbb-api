@@ -49,6 +49,10 @@ const registerUser = async (req: Request, res: Response) => {
 const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Please provide email and password.' });
+  }
+
   const user = await prisma.user.findUnique({
     where: {
       email: email,
@@ -56,37 +60,44 @@ const loginUser = async (req: Request, res: Response) => {
   });
 
   if (!user) {
-    return res.status(401).json({ message: 'Invalid email or password.' });
+    return res.status(401).json({ status: 'error', message: 'Invalid email or password.' });
   }
 
   // Verify password
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    return res.status(401).json({ message: 'Invalid email or password.' });
+    return res.status(401).json({ status: 'error', message: 'Invalid email or password.' });
   }
 
+  const accountStatus = user.accountStatus;
+  if (accountStatus === 'SUSPENDED') {
+    return res.status(403).json({ status: 'error', message: 'Your account is suspended. Please contact support.' });
+  } else if (accountStatus === 'INACTIVE') {
+    return res.status(403).json({ status: 'error', message: 'Your account is inactive. Please contact support.' });
+  }
+  
   // Check if a token already exists for the user in the database
   let userToken = await prisma.userAPIToken.findFirst({
     where: {
       userId: user.id,
     },
   });
-
   const expiresIn = process.env.JWT_EXPIRATION || '1d';
+  const expirationMilliseconds = parseDuration(expiresIn);
   let token: string;
 
   // If no existing token is found, generate a new one and log it in the database
   if (!userToken) {
     // Generate new JWT token
-    token = generateToken(user.id);
+    token = generateToken(user.id, expirationMilliseconds);
 
     // Log token in db
     userToken = await prisma.userAPIToken.create({
       data: {
         userId: user.id,
         token: token,
-        expiresAt: new Date(Date.now() + parseDuration(expiresIn)),
+        expiresAt: new Date(Date.now() + expirationMilliseconds),
       }
     });
   } else {
@@ -95,7 +106,7 @@ const loginUser = async (req: Request, res: Response) => {
     // If the existing token is expired, generate a new one and update the database
     if (isTokenExpired) {
       // Generate new JWT token
-      token = generateToken(user.id);
+      token = generateToken(user.id, expirationMilliseconds);
 
       // Log token in db
       const tokenLog = await prisma.userAPIToken.update({
@@ -104,7 +115,8 @@ const loginUser = async (req: Request, res: Response) => {
         },
         data: {
           token: token,
-          expiresAt: new Date(Date.now() + parseDuration(expiresIn)),
+          createdAt: new Date(Date.now()),
+          expiresAt: new Date(Date.now() + expirationMilliseconds),
         }
       });
 
@@ -119,7 +131,7 @@ const loginUser = async (req: Request, res: Response) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production', // Set to true in production
     sameSite: 'strict',
-    maxAge: userToken.expiresAt.getTime() - Date.now(), // Convert expiresIn to milliseconds
+    maxAge: userToken.expiresAt.getTime() - Date.now(),
   });
 
   return res.status(200).json({ status: 'success', message: 'User login successful', 

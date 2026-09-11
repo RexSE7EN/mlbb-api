@@ -9,7 +9,7 @@ import userRoutes from '@/routes/userRoutes.js';
 
 // Load environment variables
 config();
-connectDB();
+await connectDB();
 
 // Initialize the Express app
 const app = express();
@@ -34,8 +34,8 @@ app.use('/heroes', heroesRoutes);
 
 // Start of the server
 const server = app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`URL : http://localhost:${PORT}`);
+  console.log(`[MLBB-API] Server is running on port ${PORT}`);
+  console.log(`[MLBB-API] URL : http://localhost:${PORT}`);
 });
 
 // Handle shutdown events
