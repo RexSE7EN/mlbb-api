@@ -5,12 +5,13 @@ MLBB-API is a TypeScript and Express API for Mobile Legends: Bang Bang data.
 ## Features
 
 - Hero data endpoints
-- Nightly API endpoints for development work
+- Item data endpoints
+- Jungle Creep / Game Mode and Misc endpoints
 - PostgreSQL database access through Prisma
 
 ## Requirements
 
-- Node.js
+- Node.js LTS (v24.19.0*)
 - npm
 - A PostgreSQL-compatible database
 

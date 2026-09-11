@@ -23,6 +23,10 @@ const getUsers = async (req: Request, res: Response) => {
     });
   }
 
+  if (!users) {
+    return res.status(404).json({ status: "error", message: "Users not found" });
+  }
+
   return res.status(200).json({ status: "success", message: "Got user(s) successfully",
     data : users
    });
