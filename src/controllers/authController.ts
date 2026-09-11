@@ -4,6 +4,32 @@ import bcrypt from 'bcryptjs';
 import generateToken  from '@/utils/generateToken.js';
 import { parseDuration } from '@/utils/dateTimeConverter.js';
 
+const getTokenFromRequest = (req: Request): string | null => {
+  const cookieHeader = req.headers.cookie;
+  const authHeader = req.headers.authorization;
+
+  if (typeof req.cookies?.token === 'string' && req.cookies.token) {
+    return req.cookies.token;
+  }
+
+  if (typeof cookieHeader === 'string') {
+    const cookie = cookieHeader
+      .split(';')
+      .map((item) => item.trim())
+      .find((item) => item.startsWith('token='));
+
+    if (cookie) {
+      return decodeURIComponent(cookie.split('=')[1] || '');
+    }
+  }
+
+  if (typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
+    return authHeader.replace('Bearer ', '').trim();
+  }
+
+  return null;
+};
+
 const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
@@ -135,6 +161,16 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 const logoutUser = async (req: Request, res: Response) => {
+  const token = getTokenFromRequest(req);
+
+  if (token) {
+    await prisma.userAPIToken.deleteMany({
+      where: {
+        token,
+      },
+    });
+  }
+
   res.cookie('token', '', {
     httpOnly: true,
     expires: new Date(0), // Set the cookie to expire in the past
