@@ -13,7 +13,30 @@ const getHeroById = (req: Request, res: Response) => {
   });
 }
 
+const createHero = (req: Request, res: Response) => {
+  res.json({
+    message: 'Assume a new hero is created'
+  });
+}
+
+const updateHeroById = (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.json({
+    message: `Assume hero with ID ${id} is updated`
+  });
+}
+
+const deleteHeroById = (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.json({
+    message: `Assume hero with ID ${id} is deleted`
+  });
+}
+
 export {
   getAllHeroes,
-  getHeroById
+  getHeroById,
+  createHero,
+  updateHeroById,
+  deleteHeroById
 };

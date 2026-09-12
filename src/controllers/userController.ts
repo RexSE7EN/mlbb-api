@@ -32,6 +32,22 @@ const getUsers = async (req: Request, res: Response) => {
    });
 }
 
+const updateUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.json({
+    message: `Assume user with ID ${id} is updated`
+  });
+}
+
+const deleteUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.json({
+    message: `Assume user with ID ${id} is deleted`
+  });
+}
+
 export {
   getUsers,
-}
+  updateUserById,
+  deleteUserById
+};

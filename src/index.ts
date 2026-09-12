@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
   });
 });
 
+// API Routes
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 

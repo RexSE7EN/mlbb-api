@@ -49,6 +49,11 @@ npx prisma migrate dev --name <describe-your-change>
 
 ## Running the API
 
+Before you run API server, be sure to seed the database for initial ADMIN user:
+```bash
+npm run seedDb
+```
+
 Start the development server:
 
 ```bash
