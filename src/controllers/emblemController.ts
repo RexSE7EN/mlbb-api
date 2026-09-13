@@ -101,7 +101,8 @@ const createEmblem = async (req: Request, res: Response) => {
 };
 
 const updateEmblem = async (req: Request, res: Response) => {
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const { id }  = req.params;
+
   const { name, description, image } = req.body;
 
   try {
@@ -115,7 +116,7 @@ const updateEmblem = async (req: Request, res: Response) => {
     }
 
     const emblem = await prisma.emblem.update({
-      where: { id },
+      where: { id: id.toString() },
       data: {
         ...(name !== undefined && { name }),
         ...(description !== undefined && { description }),
@@ -138,7 +139,7 @@ const updateEmblem = async (req: Request, res: Response) => {
 };
 
 const deleteEmblem = async (req: Request, res: Response) => {
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const { id }  = req.params;
 
   try {
     const emblem = await prisma.emblem.findUnique({ where: { id } });
@@ -150,7 +151,7 @@ const deleteEmblem = async (req: Request, res: Response) => {
       });
     }
 
-    await prisma.emblem.delete({ where: { id } });
+    await prisma.emblem.delete({ where: { id: id.toString() } });
 
     return res.status(200).json({
       status: 'success',

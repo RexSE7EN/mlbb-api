@@ -9,13 +9,14 @@ import {
 } from '@/controllers/blessingController.js';
 
 const router = express.Router();
+router.use(authMiddleware);
 
 router.get('/', getBlessings);
 router.get('/:id', getBlessingById);
 
-router.use(authMiddleware, authorizedRoles(['ADMIN']));
-router.post('/', createBlessing);
-router.patch('/:id', updateBlessing);
-router.delete('/:id', deleteBlessing);
+
+router.post('/', authorizedRoles(['ADMIN']), createBlessing);
+router.patch('/:id', authorizedRoles(['ADMIN']), updateBlessing);
+router.delete('/:id', authorizedRoles(['ADMIN']), deleteBlessing);
 
 export default router;

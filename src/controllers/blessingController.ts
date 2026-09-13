@@ -20,11 +20,12 @@ const getBlessings = async (_req: Request, res: Response) => {
 };
 
 const getBlessingById = async (req: Request, res: Response) => {
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = req.params.id;
+  console.log('Fetching blessing with ID:', typeof(id), id); // Debugging log
 
   try {
     const blessing = await prisma.blessing.findUnique({
-      where: { id },
+      where: { id: id.toString() },
     });
 
     if (!blessing) {
@@ -83,7 +84,7 @@ const createBlessing = async (req: Request, res: Response) => {
 };
 
 const updateBlessing = async (req: Request, res: Response) => {
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const { id } = req.params;
   const { name, description, image, type } = req.body;
 
   try {
@@ -97,7 +98,7 @@ const updateBlessing = async (req: Request, res: Response) => {
     }
 
     const blessing = await prisma.blessing.update({
-      where: { id },
+      where: { id: id.toString() },
       data: {
         ...(name !== undefined && { name }),
         ...(description !== undefined && { description }),
@@ -121,7 +122,7 @@ const updateBlessing = async (req: Request, res: Response) => {
 };
 
 const deleteBlessing = async (req: Request, res: Response) => {
-  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const { id } = req.params;
 
   try {
     const blessing = await prisma.blessing.findUnique({ where: { id } });
@@ -133,7 +134,7 @@ const deleteBlessing = async (req: Request, res: Response) => {
       });
     }
 
-    await prisma.blessing.delete({ where: { id } });
+    await prisma.blessing.delete({ where: { id: id.toString() } });
 
     return res.status(200).json({
       status: 'success',

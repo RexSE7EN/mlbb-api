@@ -9,13 +9,15 @@ import {
 } from '@/controllers/emblemController.js';
 
 const router = express.Router();
+router.use(authMiddleware);
 
 router.get('/', getEmblems);
+
 router.get('/:id', getEmblemById);
 
-router.use(authMiddleware, authorizedRoles(['ADMIN']));
-router.post('/', createEmblem);
-router.patch('/:id', updateEmblem);
-router.delete('/:id', deleteEmblem);
+
+router.post('/',authorizedRoles(['ADMIN']), createEmblem);
+router.patch('/:id',authorizedRoles(['ADMIN']), updateEmblem);
+router.delete('/:id',authorizedRoles(['ADMIN']), deleteEmblem);
 
 export default router;

@@ -7,6 +7,7 @@ import authRoutes from '@/routes/authRoutes.js';
 import heroesRoutes from '@/routes/heroesRoutes.js';
 import blessingsRoutes from '@/routes/blessingsRoutes.js';
 import emblemsRoutes from '@/routes/emblemsRoutes.js';
+import emblemTalentsRoutes from '@/routes/emblemTalentsRoutes.js';
 import userRoutes from '@/routes/userRoutes.js';
 
 // Load environment variables
@@ -35,6 +36,7 @@ app.use('/users', userRoutes);
 app.use('/heroes', heroesRoutes);
 app.use('/blessings', blessingsRoutes);
 app.use('/emblems', emblemsRoutes);
+app.use('/emblem-talents', emblemTalentsRoutes);
 
 // Start of the server
 const server = app.listen(PORT, () => {
