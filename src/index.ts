@@ -5,6 +5,8 @@ import { connectDB, disconnectDB } from '@/config/db.js';
 // Import Routes Section
 import authRoutes from '@/routes/authRoutes.js';
 import heroesRoutes from '@/routes/heroesRoutes.js';
+import blessingsRoutes from '@/routes/blessingsRoutes.js';
+import emblemsRoutes from '@/routes/emblemsRoutes.js';
 import userRoutes from '@/routes/userRoutes.js';
 
 // Load environment variables
@@ -31,6 +33,8 @@ app.use('/users', userRoutes);
 
 // Custom API Routes
 app.use('/heroes', heroesRoutes);
+app.use('/blessings', blessingsRoutes);
+app.use('/emblems', emblemsRoutes);
 
 // Start of the server
 const server = app.listen(PORT, () => {
