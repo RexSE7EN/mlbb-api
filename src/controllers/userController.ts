@@ -27,9 +27,13 @@ const getUsers = async (req: Request, res: Response) => {
     return res.status(404).json({ status: "error", message: "Users not found" });
   }
 
-  return res.status(200).json({ status: "success", message: "Got user(s) successfully",
-    data : users
-   });
+  return res.status(200).json({
+    status: "success",
+    message: (Array.isArray(users) && users.length === 1) || !Array.isArray(users)
+      ? "Got user successfully"
+      : "Got users successfully",
+    data: users,
+  });
 }
 
 const updateUserById = async (req: Request, res: Response) => {

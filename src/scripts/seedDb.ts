@@ -100,6 +100,7 @@ async function seedDb(): Promise<void> {
         email: adminEmail,
       },
     });
+    
     if (userExists) {
       console.log('User already exists. Please check your email.');
       return;
@@ -128,6 +129,7 @@ async function seedDb(): Promise<void> {
     console.log("Database seeded successfully.");
   } catch (error) {
     console.error("\nProcess interrupted or error occurred while seeding the database:");
+    console.error(error);
     process.exitCode = 1;
   } finally {
     rl.close();

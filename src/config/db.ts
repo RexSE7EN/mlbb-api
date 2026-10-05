@@ -1,10 +1,13 @@
 import 'dotenv/config';
 import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from '@prisma/adapter-neon';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-const adapter = new PrismaNeon({
-  connectionString: process.env.DATABASE_URL,
-});
+const connectionString = process.env.DATABASE_URL;
+const isLocalDatabase = connectionString?.includes("localhost") || connectionString?.includes("127.0.0.1");
+const adapter = isLocalDatabase
+  ? new PrismaPg({ connectionString })
+  : new PrismaNeon({ connectionString });
 
 const prisma = new PrismaClient({
   adapter,
