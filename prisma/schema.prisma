@@ -27,7 +27,7 @@ model Hero {
   role        Role[]  @default([UNDEFINED])
   description String?
   image       String?
-  releaseDate DateTime @default(now())
+  releaseDate DateTime @default(now()) @db.Date
   skills      Skill[]
   skins       Skin[]
   attributes  HeroAttribute?
@@ -52,7 +52,7 @@ model Skin {
   id          String      @id @default(uuid())
   heroId      String
   name        String
-  releaseDate DateTime @default(now())
+  releaseDate DateTime @default(now()) @db.Date
   image       String?
   hero        Hero     @relation(fields: [heroId], references: [id], onDelete: Cascade)
 
@@ -62,21 +62,21 @@ model Skin {
 model HeroAttribute {
   id                String @id @default(uuid())
   heroId            String @unique
-  hp                Float
-  hpGrowth          Float?
-  hpRegen           Float?
-  mana              Float?
-  manaGrowth        Float?
-  manaRegen         Float?
-  physicalAttack    Float?
-  physicalAttackGrowth Float?
-  magicPower        Float?
-  physicalDefense   Float?
-  magicDefense      Float?
-  attackSpeed       Float?
-  attackSpeedGrowth Float?
-  movementSpeed     Float?
-  attackRange       Float?
+  hp                Float @default(0.0)
+  hpGrowth          Float @default(0.0)
+  hpRegen           Float @default(0.0)
+  mana              Float @default(0.0)
+  manaGrowth        Float @default(0.0)
+  manaRegen         Float @default(0.0)
+  physicalAttack    Float @default(0.0)
+  physicalAttackGrowth Float @default(0.0)
+  magicPower        Float @default(0.0)
+  physicalDefense   Float @default(0.0)
+  magicDefense      Float @default(0.0)
+  attackSpeed       Float @default(0.0)
+  attackSpeedGrowth Float @default(0.0)
+  movementSpeed     Float @default(0.0)
+  attackRange       Float @default(0.0)
   hero              Hero   @relation(fields: [heroId], references: [id], onDelete: Cascade)
 
   @@map("hero_attributes")

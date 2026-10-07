@@ -44,8 +44,56 @@ const createHero = async (req: Request, res: Response) => {
 
   const { name, description, role, image, release_date, skills, skins, attributes } = req.body;
 
+  if (!name) {
+    return res.status(400).json({ status: 'error', message: 'Name is required' });
+  }
+
+  if (!skills || skills.length < 2) {
+    return res.status(400).json({ status: 'error', message: 'At least two skills are required' });
+  }
+
+  if (skins && skins.length === 0) {
+    return res.status(400).json({ status: 'error', message: 'At least one skin is required' });
+  }
+
+  const existingHero = await prisma.hero.findFirst({
+    where: {
+      name: name,
+    },
+  });
+
+  if (existingHero) {
+    return res.status(400).json({ status: 'error', message: 'Hero with this name already exists' });
+  }
+
+  const newHero = await prisma.hero.create({
+    data: {
+      name,
+      description,
+      role,
+      image,
+      releaseDate: release_date ? new Date(release_date) : undefined,
+      skills: {
+        create: skills
+      },
+      skins: { 
+        create: skins ?? [
+          {
+            name: 'Default Skin - ' + name,
+            releaseDate: release_date ? new Date(release_date) : undefined,
+          }
+        ]
+      },
+      attributes: {
+        create: attributes ?? {}
+      }
+    },
+  });
+
   res.json({
-    message: 'Assume a new hero is created'
+    status: 'success',
+    message: 'New hero is created',
+    data: newHero
   });
 }
 
