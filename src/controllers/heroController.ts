@@ -13,11 +13,13 @@ const getAllHeroes = async (req: Request, res: Response) => {
 };
 
 const getHeroById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const hero = await prisma.hero.findUnique({
+  const { heroId } = req.params;
+  const hero = await prisma.hero.findFirst({
     where: {
-      id: id.toString(),
-      name: id.toString(),
+      OR: [
+        { id: heroId.toString() },
+        { name: heroId.toString() }
+      ],
     },
   });
 
@@ -30,18 +32,6 @@ const getHeroById = async (req: Request, res: Response) => {
 
 const createHero = async (req: Request, res: Response) => {
 
-  /*
-  id          String      @id @default(uuid())
-  name        String
-  role        Role[]  @default([UNDEFINED])
-  description String?
-  image       String?
-  releaseDate DateTime @default(now())
-  skills      Skill[]
-  skins       Skin[]
-  attributes  HeroAttribute?
-  */
-
   const { name, description, role, image, release_date, skills, skins, attributes } = req.body;
 
   if (!name) {
@@ -52,10 +42,6 @@ const createHero = async (req: Request, res: Response) => {
     return res.status(400).json({ status: 'error', message: 'At least two skills are required' });
   }
 
-  if (skins && skins.length === 0) {
-    return res.status(400).json({ status: 'error', message: 'At least one skin is required' });
-  }
-
   const existingHero = await prisma.hero.findFirst({
     where: {
       name: name,
@@ -64,6 +50,15 @@ const createHero = async (req: Request, res: Response) => {
 
   if (existingHero) {
     return res.status(400).json({ status: 'error', message: 'Hero with this name already exists' });
+  }
+
+  // Validate data (role, date, etc.) as needed
+  if (role && !['ASSASSIN', 'FIGHTER', 'MAGE', 'MARKSMAN', 'SUPPORT', 'TANK'].includes(role)) {
+    return res.status(400).json({ status: 'error', message: 'Invalid role' });
+  }
+
+  if (release_date && new Date(release_date) > new Date()) {
+    return res.status(400).json({ status: 'error', message: 'Release date cannot be in the future' });
   }
 
   const newHero = await prisma.hero.create({
@@ -98,16 +93,36 @@ const createHero = async (req: Request, res: Response) => {
 }
 
 const updateHeroById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.json({
-    message: `Assume hero with ID ${id} is updated`
+  const { heroId } = req.params;
+
+  return res.status(200).json({
+    status: 'success',
+    message: `Assume hero with ID ${heroId} is updated`
   });
 }
 
 const deleteHeroById = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  res.json({
-    message: `Assume hero with ID ${id} is deleted`
+  const { heroId } = req.params;
+
+  const hero = await prisma.hero.findUnique({
+    where: {
+      id: heroId.toString(),
+    },
+  });
+
+  if (!hero) {
+    return res.status(404).json({ status: 'error', message: 'Hero not found' });
+  }
+
+  await prisma.hero.delete({
+    where: {
+      id: heroId.toString(),
+    },
+  });
+
+  return res.status(200).json({
+    status: 'success',
+    message: `Assume hero with ID ${heroId} is deleted`
   });
 }
 

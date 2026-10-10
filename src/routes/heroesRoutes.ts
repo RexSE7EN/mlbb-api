@@ -11,24 +11,24 @@ router.use(authMiddleware);
 // @access  Public (Authorized users only)
 router.get("/", getAllHeroes);
 
-// @route   GET /heroes/:id
+// @route   GET /heroes/:heroId
 // @desc    Get a hero entry by ID
 // @access  Public (Authorized users only)
-router.get("/:id", getHeroById);
+router.get("/:heroId", getHeroById);
 
 // @route   POST /heroes
 // @desc    Create a new hero entry
 // @access  Private (Admin only)
 router.post("/", authorizedRoles(['ADMIN']), createHero);
 
-// @route   PATCH /heroes/:id
+// @route   PATCH /heroes/:heroId
 // @desc    Update a hero entry by ID
 // @access  Private (Admin only)
-router.patch("/:id", authorizedRoles(['ADMIN']), updateHeroById);
+router.patch("/:heroId", authorizedRoles(['ADMIN']), updateHeroById);
 
-// @route   DELETE /heroes/:id
+// @route   DELETE /heroes/:heroId
 // @desc    Delete a hero entry by ID
 // @access  Private (Admin only)
-router.delete("/:id", authorizedRoles(['ADMIN']), deleteHeroById);
+router.delete("/:heroId", authorizedRoles(['ADMIN']), deleteHeroById);
 
 export default router;

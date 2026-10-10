@@ -4,8 +4,9 @@ import { connectDB, disconnectDB } from '@/config/db.js';
 
 // Import Routes Section
 import authRoutes from '@/routes/authRoutes.js';
-import heroesRoutes from '@/routes/heroesRoutes.js';
 import userRoutes from '@/routes/userRoutes.js';
+import heroesRoutes from '@/routes/heroesRoutes.js';
+import skillsRoutes from '@/routes/skillsRoutes.js';
 
 // Load environment variables
 config();
@@ -30,8 +31,12 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 
-// Custom API Routes
+// MLBB API Routes
+// Heroes Routes
 app.use('/heroes', heroesRoutes);
+app.use('/heroes', skillsRoutes); //skills
+app.use('/heroes', heroesRoutes); //skins
+app.use('/heroes', heroesRoutes); //attributes
 
 // Start of the server
 const server = app.listen(PORT, () => {
